@@ -3,9 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-console.log("environment    ", process.env.ENVIRONMENT);
-console.log("PORT    ", process.env.PORT);
-console.log("MONGO_CONNECTION_STRING    ", process.env.MONGO_CONNECTION_STRING);
+// console.log("environment    ", process.env.ENVIRONMENT);
+// console.log("PORT    ", process.env.PORT);
+// console.log("MONGO_CONNECTION_STRING    ", process.env.MONGO_CONNECTION_STRING);
 if (process.env.ENVIRONMENT !== "production") {
   require("dotenv").config();
 }
@@ -25,7 +25,7 @@ app.get("/api/tasks", (req, res) => {
 });
 
 app.post("/api/task", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   taskController.createTask(req.body.task).then((data) => res.json(data));
 });
 
@@ -42,5 +42,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(3080, () => {
-  console.log(`Server listening on the 3080  ${3080}`);
+  // console.log(`Server listening on the 3080  ${3080}`);
 });

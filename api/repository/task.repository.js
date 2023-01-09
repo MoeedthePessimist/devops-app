@@ -10,7 +10,7 @@ class TaskRepository {
 
     async getTasks() {
         const tasks = await Task.find({});
-        console.log('tasks:::', tasks);
+        // console.log('tasks:::', tasks);
         return tasks;
     }
 

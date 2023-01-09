@@ -1,54 +1,81 @@
-import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../App.css';
-import Header from './Header'
-import { Tasks } from './Tasks'
-import CreateTask from './CreateTask'
-import { getAllTasks, deleteTask, fetchSettings } from '../services/TaskService'
+import React, { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../App.css";
+import Header from "./Header";
+import { Tasks } from "./Tasks";
+import CreateTask from "./CreateTask";
+import {
+  getAllTasks,
+  deleteTask,
+  fetchSettings,
+} from "../services/TaskService";
 
 function Home() {
-
-  const [tasks, setTasks] = useState([])
-  const [numberOfTasks, setNumberOfTasks] = useState([])
-  const [isTaskEdited, setTaskEdited] = useState(false)
+  const [tasks, setTasks] = useState([]);
+  const [numberOfTasks, setNumberOfTasks] = useState([]);
+  const [isTaskEdited, setTaskEdited] = useState(false);
+  const [message, setMessage] = useState("");
+  const [alert, setAlert] = useState("");
 
   useEffect(() => {
-    getAllTasks().then(tasks => {
-        console.log(tasks)
-        setTasks(tasks)
-      });
-  }, [numberOfTasks, isTaskEdited])
-
+    getAllTasks().then((tasks) => {
+      // console.log(tasks)
+      setTasks(tasks);
+    });
+  }, [numberOfTasks, isTaskEdited]);
 
   function delTask(taskId) {
-      deleteTask(taskId).then(response => {
-        console.log(response)
-        setNumberOfTasks(numberOfTasks - 1)
-      });
+    deleteTask(taskId).then(
+      (response) => {
+        // console.log(response)
+
+        setNumberOfTasks(numberOfTasks - 1);
+        setAlert("passed");
+        setMessage("PASSED, TASK DELETED");
+      },
+      (err) => {
+        setAlert("failed");
+        setMessage("FAILED, TASK NOT DELETED");
+      }
+    );
   }
 
   function taskCreated() {
-    setNumberOfTasks(numberOfTasks + 1)
+    setNumberOfTasks(numberOfTasks + 1);
   }
 
   function taskEdited(res) {
-     setTaskEdited(res)
+    setTaskEdited(res);
   }
-    
+
   return (
     <div className="App">
       <Header></Header>
       <div className="container mrgnbtm">
         <div className="row">
           <div className="col-md-12">
-              <CreateTask taskCreated={taskCreated}></CreateTask>
+            <CreateTask
+              taskCreated={taskCreated}
+              message={message}
+              setMessage={setMessage}
+              alert={alert}
+              setAlert={setAlert}
+            ></CreateTask>
           </div>
         </div>
       </div>
       <div className="container mrgnbtm">
-        <Tasks tasks={tasks} deleteTask={delTask} taskEdited={taskEdited}></Tasks>
-     </div> 
-  </div>
+        <Tasks
+          tasks={tasks}
+          deleteTask={delTask}
+          taskEdited={taskEdited}
+          message={message}
+          setMessage={setMessage}
+          alert={alert}
+          setAlert={setAlert}
+        ></Tasks>
+      </div>
+    </div>
   );
 }
 

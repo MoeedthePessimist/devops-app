@@ -27,12 +27,16 @@ const localhost = "http://localhost:3002";
 // task edit button: document.querySelector("#root > div > div > div:nth-child(3) > div > table > tbody > tr:nth-child(1) > td:nth-child(4) > div > div:nth-child(2) > button")
 // task delete button: document.querySelector("#root > div > div > div:nth-child(3) > div > table > tbody > tr:nth-child(1) > td:nth-child(4) > div > div:nth-child(3) > button")
 
-let driver = new Builder()
-  .forBrowser("chrome")
-  // .setChromeOptions(new chrome.Options().headless())
-  .build();
+// let driver = new Builder()
+//   .forBrowser("chrome")
+//   .setChromeOptions(new chrome.Options().headless())
+//   .build();
 
 const createTaskTestSuccess = async () => {
+  let driver = new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(new chrome.Options().headless())
+    .build();
   try {
     await driver.get(localhost);
     const name = await driver.findElement(By.xpath('//*[@id="task"]'));
@@ -66,6 +70,10 @@ const createTaskTestSuccess = async () => {
 };
 
 const createTaskTestFail = async () => {
+  let driver = new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(new chrome.Options().headless())
+    .build();
   try {
     await driver.get(localhost);
     // const name = await driver.findElement(By.xpath('//*[@id="task"]'));
@@ -98,78 +106,101 @@ const createTaskTestFail = async () => {
 };
 
 const updateTaskTestSuccess = async () => {
-  await driver.get(localhost);
-  const random_text = "this is a random text";
-  setTimeout(async () => {
-    try {
-      await driver.findElement(By.xpath('//*[@id="edit-btn-0"]')).click();
+  let driver = new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(new chrome.Options().headless())
+    .build();
+  try {
+    await driver.get(localhost);
+    const random_text = "this is a random text";
+    setTimeout(async () => {
+      try {
+        await driver.findElement(By.xpath('//*[@id="edit-btn-0"]')).click();
 
-      await driver
-        .findElement(By.xpath('//*[@id="edit-task"]'))
-        .sendKeys(Key.chord(Key.CONTROL, "a"), random_text);
+        await driver
+          .findElement(By.xpath('//*[@id="edit-task"]'))
+          .sendKeys(Key.chord(Key.CONTROL, "a"), random_text);
 
-      await driver
-        .findElement(By.xpath('//*[@id="edit-btn-submit-0"]'))
-        .click();
+        await driver
+          .findElement(By.xpath('//*[@id="edit-btn-submit-0"]'))
+          .click();
 
-      const text = await driver
-        .findElement(By.xpath('//*[@id="td-0"]'))
-        .getText();
+        const text = await driver
+          .findElement(By.xpath('//*[@id="td-0"]'))
+          .getText();
 
-      console.log(text, random_text);
+        console.log(text, random_text);
 
-      assert.equal(text, random_text);
-      console.log("test passed");
-    } catch (err) {
-      console.log(err);
-      console.log("test failed");
-    } finally {
-      //close the browser
-      await driver.quit();
-    }
-  }, 2000);
+        assert.equal(text, random_text);
+        console.log("test passed");
+      } catch (err) {
+        console.log(err);
+        console.log("test failed");
+      } finally {
+        //close the browser
+        await driver.quit();
+      }
+    }, 2000);
+  } catch (err) {
+    console.log(err);
+    console.log("test failed");
+  } finally {
+    //close the browser
+    await driver.quit();
+  }
 };
 
 const deleteTaskTestSuccess = async () => {
-  await driver.get(localhost);
-  setTimeout(async () => {
-    try {
-      await driver.findElement(By.xpath('//*[@id="delete-btn-0"]')).click();
+  let driver = new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(new chrome.Options().headless())
+    .build();
+  try {
+    await driver.get(localhost);
+    setTimeout(async () => {
+      try {
+        await driver.findElement(By.xpath('//*[@id="delete-btn-0"]')).click();
 
-      setTimeout(async () => {
-        try {
-          const text = await driver
-            .findElement(By.xpath('//*[@id="message"]'))
-            .getText();
+        setTimeout(async () => {
+          try {
+            const text = await driver
+              .findElement(By.xpath('//*[@id="message"]'))
+              .getText();
 
-          console.log(text);
+            console.log(text);
 
-          assert.equal(text, "PASSED, TASK DELETED");
-          console.log("test passed");
-        } catch (err) {
-          console.log(err);
-          console.log("test failed");
-        } finally {
-          //close the browser
-          await driver.quit();
-        }
-      }, 1000);
-    } catch (err) {
-      console.log(err);
-      console.log("test failed");
-    } finally {
-      //close the browser
-      await driver.quit();
-    }
-  }, 2000);
+            assert.equal(text, "PASSED, TASK DELETED");
+            console.log("test passed");
+          } catch (err) {
+            console.log(err);
+            console.log("test failed");
+          } finally {
+            //close the browser
+            await driver.quit();
+          }
+        }, 1000);
+      } catch (err) {
+        console.log(err);
+        console.log("test failed");
+      } finally {
+        //close the browser
+        await driver.quit();
+      }
+    }, 2000);
+  } catch (err) {
+    console.log(err);
+    console.log("test failed");
+  } finally {
+    //close the browser
+    await driver.quit();
+  }
 };
 
-createTaskTestSuccess();
+const run = async () => {
+  await createTaskTestSuccess();
+  await createTaskTestFail();
+  await updateTaskTestSuccess();
+  await deleteTaskTestSuccess();
+};
 
-createTaskTestFail();
-
-updateTaskTestSuccess();
-
-setTimeout(() => {
-  deleteTaskTestSuccess();
-}, 10000);
+run();

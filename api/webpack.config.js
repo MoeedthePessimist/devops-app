@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 const environment = process.env.ENVIRONMENT;
 
-console.log('environment:::::', environment);
+// console.log('environment:::::', environment);
 
 let ENVIRONMENT_VARIABLES = {
   'process.env.ENVIRONMENT': JSON.stringify('development'),

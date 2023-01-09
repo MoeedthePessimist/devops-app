@@ -13,6 +13,7 @@
     "react-hook-form": "^7.25.3",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "selenium-webdriver": "^4.7.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
